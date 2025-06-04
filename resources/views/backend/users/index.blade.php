@@ -9,34 +9,34 @@
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Users List</h6>
-      <a href="{{route('users.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add User</a>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Danh sách Users</h6>
+      <a href="{{route('users.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Thêm User</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-bordered" id="user-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>S.N.</th>
-              <th>Name</th>
+              <th>STT</th>
+              <th>Tên</th>
               <th>Email</th>
-              <th>Photo</th>
-              <th>Join Date</th>
+              <th>Ảnh</th>
+              <th>Ngày tạo</th>
               <th>Role</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-                <th>S.N.</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Photo</th>
-                <th>Join Date</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>STT</th>
+              <th>Tên</th>
+              <th>Email</th>
+              <th>Ảnh</th>
+              <th>Ngày tạo</th>
+              <th>Role</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
               </tr>
           </tfoot>
           <tbody>

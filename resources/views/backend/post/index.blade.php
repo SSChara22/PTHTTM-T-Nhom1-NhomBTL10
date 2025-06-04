@@ -9,8 +9,8 @@
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Post Lists</h6>
-      <a href="{{route('post.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Post</a>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Danh sách bài đăng</h6>
+      <a href="{{route('post.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Thêm bài đăng</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -18,26 +18,26 @@
         <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>S.N.</th>
-              <th>Title</th>
-              <th>Category</th>
+              <th>STT</th>
+              <th>Tiêu đề</th>
+              <th>Danh mục</th>
               <th>Tag</th>
-              <th>Author</th>
-              <th>Photo</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Tác giả</th>
+              <th>Ảnh</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-              <th>S.N.</th>
-              <th>Title</th>
-              <th>Category</th>
+              <th>STT</th>
+              <th>Tiêu đề</th>
+              <th>Danh mục</th>
               <th>Tag</th>
-              <th>Author</th>
-              <th>Photo</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Tác giả</th>
+              <th>Ảnh</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
             </tr>
           </tfoot>
           <tbody>
@@ -88,7 +88,7 @@
         </table>
         <span style="float:right">{{$posts->links()}}</span>
         @else
-          <h6 class="text-center">No posts found!!! Please create Post</h6>
+          <h6 class="text-center">Không có bài đăng nào!</h6>
         @endif
       </div>
     </div>

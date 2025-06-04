@@ -8,27 +8,27 @@
 </head>
 
 <body>
-  
+
   <div class="container-fluid">
 
     <div class="row" style="margin-top:10%">
-        <!-- 404 Error Text -->
+      <!-- 404 Error Text -->
       <div class="col-md-12">
         <div class="text-center">
           <div class="error mx-auto" data-text="404">404</div>
           <p class="lead text-gray-800 mb-5">Page Not Found</p>
-          <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
+          <p class="text-gray-500 mb-0">Có vẻ như bạn đã tìm thấy lỗi trong ma trận...</p>
           {{-- {{dd(auth()->user())}}; --}}
-            <a href="{{route('home')}}">&larr; Back to Home</a>
+          <a href="{{route('home')}}">&larr; Quay lại Home</a>
 
         </div>
       </div>
     </div>
 
-    </div>
+  </div>
 
 
-    @include('backend.layouts.footer')
+  @include('backend.layouts.footer')
 
 </body>
 
