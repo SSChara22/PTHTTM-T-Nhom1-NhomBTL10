@@ -43,11 +43,7 @@
                 @endif
             </td>
             <td>
-                <form method="POST" action="{{route('order.destroy',[$order->id])}}">
-                  @csrf
-                  @method('delete')
-                      <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                </form>
+                <!-- Đã xoá form xoá đơn hàng -->
             </td>
 
         </tr>
@@ -96,6 +92,33 @@
                         <td>Trạng thái thanh toán</td>
                         <td> : {{$order->payment_status}}</td>
                     </tr>
+                    @if($order->status == 'delivered' && $order->payment_status == 'paid' && !$order->return)
+                    <tr>
+                        <td colspan="2">
+                            <a href="{{route('user.order.return.create', $order->id)}}" class="btn btn-warning">Yêu cầu trả hàng</a>
+                        </td>
+                    </tr>
+                    @endif
+                    @if($order->return)
+                    <tr>
+                        <td>Trạng thái yêu cầu trả hàng</td>
+                        <td> : 
+                            @if($order->return->status == 'pending')
+                                <span class="badge badge-warning">Đang chờ xử lý</span>
+                            @elseif($order->return->status == 'approved')
+                                <span class="badge badge-success">Đã được duyệt</span>
+                            @else
+                                <span class="badge badge-danger">Đã bị từ chối</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @if($order->return->admin_note)
+                    <tr>
+                        <td>Ghi chú từ admin</td>
+                        <td> : {{$order->return->admin_note}}</td>
+                    </tr>
+                    @endif
+                    @endif
               </table>
             </div>
           </div>

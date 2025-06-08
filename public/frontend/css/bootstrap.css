@@ -8630,5 +8630,50 @@ a.text-dark:hover {
     visibility: hidden!important
 }
 
+/* Thêm vào cuối file */
+.pagination-arrow {
+    font-size: 1rem !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 0.25rem !important;
+    display: inline-block !important;
+    text-align: center;
+    line-height: 1.25;
+    background: #fff !important;
+    color: #007bff !important;
+    border: 1px solid #ddd !important;
+    margin: 0 2px !important;
+    transition: background 0.2s, color 0.2s;
+}
+.pagination-arrow:hover {
+    background: #e9ecef !important;
+    color: #0056b3 !important;
+    border-color: #ddd !important;
+}
+
+/* Đảm bảo icon mũi tên trong phân trang có kích thước vừa phải */
+.page-link svg,
+.pagination-arrow svg,
+.page-link i,
+.pagination-arrow i {
+    width: 1em !important;
+    height: 1em !important;
+    font-size: 1rem !important;
+    vertical-align: middle;
+}
+
+/* Fix kích thước icon mũi tên phân trang Tailwind */
+nav[role="navigation"] svg {
+    width: 1em !important;
+    height: 1em !important;
+    font-size: 1rem !important;
+    min-width: unset !important;
+    min-height: unset !important;
+    max-width: 1.5em !important;
+    max-height: 1.5em !important;
+    vertical-align: middle;
+}
+
 
 /*# sourceMappingURL=bootstrap.min.css.map */

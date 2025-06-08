@@ -18,6 +18,7 @@
     use App\Http\Controllers\HomeController;
     use \UniSharp\LaravelFilemanager\Lfm;
     use App\Http\Controllers\Auth\ResetPasswordController;
+    use App\Http\Controllers\OrderReturnController;
     /*
     |--------------------------------------------------------------------------
     | Web Routes
@@ -176,6 +177,11 @@
         // Password Change
         Route::get('change-password', [AdminController::class, 'changePassword'])->name('change.password.form');
         Route::post('change-password', [AdminController::class, 'changPasswordStore'])->name('change.password');
+
+        // Return request management routes
+        Route::get('returns', 'OrderReturnController@index')->name('admin.returns.index');
+        Route::get('returns/{id}', 'OrderReturnController@show')->name('admin.returns.show');
+        Route::post('returns/{id}/status', 'OrderReturnController@updateStatus')->name('admin.returns.update-status');
     });
 
 
@@ -205,6 +211,9 @@
         Route::get('change-password', [HomeController::class, 'changePassword'])->name('user.change.password.form');
         Route::post('change-password', [HomeController::class, 'changPasswordStore'])->name('change.password');
 
+        // Return request routes
+        Route::get('order/{id}/return', 'OrderReturnController@create')->name('user.order.return.create');
+        Route::post('order/{id}/return', 'OrderReturnController@store')->name('user.order.return.store');
     });
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
