@@ -152,3 +152,43 @@
 			});
 		});
 	  </script>
+
+{{-- Nút mở/thu nhỏ chat --}}
+<button id="chatbot-toggle" style="position:fixed;bottom:20px;right:20px;z-index:10000;width:48px;height:48px;border-radius:50%;background:#3490dc;color:#fff;border:none;box-shadow:0 2px 8px #0002;font-size:24px;display:flex;align-items:center;justify-content:center;">
+    💬
+</button>
+{{-- Khung chat --}}
+<div id="chatbot-widget" style="position:fixed;bottom:80px;right:20px;z-index:9999;display:none;">
+    <div id="chatbot-messages" style="width:300px;height:350px;overflow-y:auto;background:#fff;border:1px solid #ccc;padding:10px;border-radius:8px 8px 0 0;"></div>
+    <form id="chatbot-form" style="display:flex;">
+        <input type="text" id="chatbot-input" placeholder="Hỏi về sản phẩm..." style="flex:1;padding:8px;border:1px solid #ccc;border-radius:0 0 0 8px;">
+        <button type="submit" style="padding:8px 12px;border:none;background:#3490dc;color:#fff;border-radius:0 0 8px 0;">Gửi</button>
+    </form>
+</div>
+<script>
+document.getElementById('chatbot-toggle').onclick = function() {
+    var widget = document.getElementById('chatbot-widget');
+    widget.style.display = (widget.style.display === 'none' || widget.style.display === '') ? 'block' : 'none';
+};
+document.getElementById('chatbot-form').onsubmit = async function(e) {
+    e.preventDefault();
+    let input = document.getElementById('chatbot-input');
+    let msg = input.value.trim();
+    if (!msg) return;
+    let messages = document.getElementById('chatbot-messages');
+    messages.innerHTML += `<div><b>Bạn:</b> ${msg}</div>`;
+    input.value = '';
+    messages.scrollTop = messages.scrollHeight;
+    let res = await fetch('{{ route('chatbot.ask') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({message: msg})
+    });
+    let data = await res.json();
+    messages.innerHTML += `<div><b>Bot:</b> ${data.answer}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+};
+</script>

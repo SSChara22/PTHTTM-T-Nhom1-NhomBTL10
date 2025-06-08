@@ -19,6 +19,7 @@
     use \UniSharp\LaravelFilemanager\Lfm;
     use App\Http\Controllers\Auth\ResetPasswordController;
     use App\Http\Controllers\OrderReturnController;
+    use App\Http\Controllers\ChatbotController;
     /*
     |--------------------------------------------------------------------------
     | Web Routes
@@ -219,3 +220,5 @@
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         Lfm::routes();
     });
+
+    Route::post('/chatbot', 'ChatbotController@ask')->name('chatbot.ask');
