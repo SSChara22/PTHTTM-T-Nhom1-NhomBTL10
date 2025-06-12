@@ -12,3 +12,10 @@
         {{session('error')}}
     </div>
 @endif
+
+@if(request()->has('momo_success'))
+    <div class="alert alert-success alert-dismissable fade show text-center">
+        <button class="close" data-dismiss="alert" aria-label="Close">×</button>
+        Thanh toán MoMo thành công! Cảm ơn bạn đã mua hàng.
+    </div>
+@endif

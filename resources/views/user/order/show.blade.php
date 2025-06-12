@@ -86,7 +86,13 @@
                     </tr>
                     <tr>
                       <td>Phương thức thanh toán</td>
-                      <td> : @if($order->payment_method=='cod') Tiền mặt @else Paypal @endif</td>
+                      <td> :
+                        @if($order->payment_method=='cod') Tiền mặt
+                        @elseif($order->payment_method=='paypal') Paypal
+                        @elseif($order->payment_method=='momo') MoMo
+                        @else {{$order->payment_method}}
+                        @endif
+                      </td>
                     </tr>
                     <tr>
                         <td>Trạng thái thanh toán</td>

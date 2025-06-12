@@ -1,84 +1,63 @@
 <?php
 
 namespace App\Http\Controllers;
-use Srmklive\PayPal\Services\ExpressCheckout;
 use Illuminate\Http\Request;
-use NunoMaduro\Collision\Provider;
 use App\Models\Cart;
 use App\Models\Product;
 use DB;
+use App\Models\Order;
+use App\Services\PayPalService;
+use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
+use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
+
 class PaypalController extends Controller
 {
-    public function payment()
+    public function createOrder(PayPalService $paypal)
     {
-        $cart = Cart::where('user_id',auth()->user()->id)->where('order_id',null)->get()->toArray();
-        
-        $data = [];
-        
-        // return $cart;
-        $data['items'] = array_map(function ($item) use($cart) {
-            $name=Product::where('id',$item['product_id'])->pluck('title');
-            return [
-                'name' =>$name ,
-                'price' => $item['price'],
-                'desc'  => 'Thank you for using paypal',
-                'qty' => $item['quantity']
-            ];
-        }, $cart);
+        // Lấy thông tin giỏ hàng và tổng tiền thực tế ở đây nếu cần
+        $request = new OrdersCreateRequest();
+        $request->prefer('return=representation');
+        $request->body = [
+            "intent" => "CAPTURE",
+            "purchase_units" => [[
+                "amount" => [
+                    "currency_code" => "USD",
+                    "value" => "10.00" // Thay bằng tổng tiền thực tế
+                ]
+            ]],
+            "application_context" => [
+                "cancel_url" => route('paypal.cancel'),
+                "return_url" => route('paypal.success')
+            ]
+        ];
 
-        $data['invoice_id'] ='ORD-'.strtoupper(uniqid());
-        $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
-        $data['return_url'] = route('payment.success');
-        $data['cancel_url'] = route('payment.cancel');
+        $client = $paypal->client();
+        $response = $client->execute($request);
 
-        $total = 0;
-        foreach($data['items'] as $item) {
-            $total += $item['price']*$item['qty'];
+        foreach ($response->result->links as $link) {
+            if ($link->rel == 'approve') {
+                return redirect($link->href);
+            }
         }
-
-        $data['total'] = $total;
-        if(session('coupon')){
-            $data['shipping_discount'] = session('coupon')['value'];
-        }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
-
-        // return session()->get('id');
-        $provider = new ExpressCheckout;
-  
-        $response = $provider->setExpressCheckout($data);
-    
-        return redirect($response['paypal_link']);
+        return redirect()->back()->with('error', 'Không lấy được link thanh toán PayPal.');
     }
-   
-    /**
-     * Responds with a welcome message with instructions
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function success(Request $request, PayPalService $paypal)
+    {
+        $token = $request->query('token');
+        if (!$token) {
+            return redirect()->route('home')->with('error', 'Không tìm thấy token thanh toán.');
+        }
+        $client = $paypal->client();
+        $captureRequest = new OrdersCaptureRequest($token);
+        $captureRequest->prefer('return=representation');
+        $response = $client->execute($captureRequest);
+        // Xử lý lưu đơn hàng, cập nhật trạng thái tại đây
+        return redirect()->route('home')->with('success', 'Thanh toán PayPal thành công!');
+    }
+
     public function cancel()
     {
-        dd('Your payment is canceled. You can create cancel page here.');
-    }
-  
-    /**
-     * Responds with a welcome message with instructions
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function success(Request $request)
-    {
-        $provider = new ExpressCheckout;
-        $response = $provider->getExpressCheckoutDetails($request->token);
-        // return $response;
-  
-        if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
-            request()->session()->flash('success','You successfully pay from Paypal! Thank You');
-            session()->forget('cart');
-            session()->forget('coupon');
-            return redirect()->route('home');
-        }
-  
-        request()->session()->flash('error','Something went wrong please try again!!!');
-        return redirect()->back();
+        return redirect()->route('home')->with('error', 'Bạn đã hủy thanh toán PayPal.');
     }
 }

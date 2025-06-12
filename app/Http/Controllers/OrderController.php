@@ -44,6 +44,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info('DEBUG_PAYMENT_METHOD', ['payment_method' => $request->payment_method, 'all' => $request->all()]);
+        // dd($request->all());
         $this->validate($request,[
             'first_name'=>'string|required',
             'last_name'=>'string|required',
@@ -121,13 +123,20 @@ class OrderController extends Controller
         if(request('payment_method')=='paypal'){
             $order_data['payment_method']='paypal';
             $order_data['payment_status']='paid';
+            // Chuyển đổi tổng tiền sang USD (giả sử 1 USD = 25000 VND)
+            $order_data['total_amount_usd'] = round($order_data['total_amount'] / 25000, 2);
+        }
+        else if(request('payment_method')=='momo'){
+            $order_data['payment_method']='momo';
+            $order_data['payment_status']='paid';
         }
         else{
             $order_data['payment_method']='cod';
-            $order_data['payment_status']='Unpaid';
+            $order_data['payment_status']='unpaid';
         }
         $order->fill($order_data);
         $status=$order->save();
+        \Log::info('ORDER_SAVED', ['order' => $order->toArray()]);
         if($order)
         // dd($order->id);
         $users=User::where('role','admin')->first();
@@ -138,7 +147,12 @@ class OrderController extends Controller
         ];
         Notification::send($users, new StatusNotification($details));
         if(request('payment_method')=='paypal'){
-            return redirect()->route('payment')->with(['id'=>$order->id]);
+            return redirect()->route('paypal.create')->with(['id'=>$order->id]);
+        }
+        else if(request('payment_method')=='momo'){
+            // Lưu thông tin đơn hàng vào session để controller MoMo lấy
+            session(['order_id' => $order->id, 'amount' => $order_data['total_amount'], 'order_code' => $order_data['order_number']]);
+            return redirect()->route('payment.momo');
         }
         else{
             session()->forget('cart');

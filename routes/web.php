@@ -20,6 +20,7 @@
     use App\Http\Controllers\Auth\ResetPasswordController;
     use App\Http\Controllers\OrderReturnController;
     use App\Http\Controllers\ChatbotController;
+    use App\Http\Controllers\MomoController;
     /*
     |--------------------------------------------------------------------------
     | Web Routes
@@ -123,11 +124,15 @@
     Route::resource('/comment', 'PostCommentController');
 // Coupon
     Route::post('/coupon-store', [CouponController::class, 'couponStore'])->name('coupon-store');
-// Payment
-    Route::get('payment', [PayPalController::class, 'payment'])->name('payment');
-    Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel');
-    Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
+// Payment (PayPal)
+    Route::get('paypal/create', [PayPalController::class, 'createOrder'])->name('paypal.create');
+    Route::get('paypal/success', [PayPalController::class, 'success'])->name('paypal.success');
+    Route::get('paypal/cancel', [PayPalController::class, 'cancel'])->name('paypal.cancel');
 
+// MoMo Payment
+    Route::match(['get', 'post'], 'payment/momo', [MomoController::class, 'createPayment'])->name('payment.momo');
+    Route::get('payment/momo/success', [MomoController::class, 'success'])->name('payment.momo.success');
+    Route::post('payment/momo/ipn', [MomoController::class, 'ipn'])->name('payment.momo.ipn');
 
 // Backend section start
 

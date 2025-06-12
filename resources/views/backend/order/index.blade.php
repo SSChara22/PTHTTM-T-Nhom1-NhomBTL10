@@ -76,8 +76,6 @@
                         @if($order->return)
                             <span class="badge badge-info mt-1">Đã yêu cầu trả hàng</span>
                             <a href="{{ route('admin.returns.show', $order->return->id) }}" class="btn btn-info btn-sm mt-1" title="Xem yêu cầu trả hàng"><i class="fa fa-undo"></i></a>
-                        @elseif($order->status=='delivered' && $order->payment_status=='paid')
-                            <a href="{{ route('admin.returns.create', $order->id) }}" class="btn btn-warning btn-sm mt-1" title="Tạo yêu cầu trả hàng"><i class="fa fa-undo"></i></a>
                         @endif
                     </td>
                 </tr>  

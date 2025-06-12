@@ -128,7 +128,7 @@
                                                 <option value="CD">Congo - Kinshasa</option>
                                                 <option value="CK">Cook Islands</option>
                                                 <option value="CR">Costa Rica</option>
-                                                <option value="CI">Côte d’Ivoire</option>
+                                                <option value="CI">Côte d'Ivoire</option>
                                                 <option value="HR">Croatia</option>
                                                 <option value="CU">Cuba</option>
                                                 <option value="CY">Cyprus</option>
@@ -309,7 +309,6 @@
                                                 <option value="UY">Uruguay</option>
                                                 <option value="UM">U.S. Minor Outlying Islands</option>
                                                 <option value="VI">U.S. Virgin Islands</option>
-                                                <option value="UZ">Uzbekistan</option>
                                                 <option value="VU">Vanuatu</option>
                                                 <option value="VA">Vatican City</option>
                                                 <option value="VE">Venezuela</option>
@@ -402,7 +401,8 @@
                                             {{-- <label class="checkbox-inline" for="1"><input name="updates" id="1" type="checkbox"> Check Payments</label> --}}
                                             <form-group>
                                                 <input name="payment_method"  type="radio" value="cod"> <label> Tiền mặt</label><br>
-                                                <input name="payment_method"  type="radio" value="paypal"> <label> PayPal</label> 
+                                                <input name="payment_method"  type="radio" value="paypal"> <label> PayPal</label><br>
+                                                <input name="payment_method"  type="radio" value="momo"> <label> MoMo</label>
                                             </form-group>
                                             
                                         </div>
